@@ -1,0 +1,38 @@
+html, body {
+	/* grey background */
+	background-color: #ebeced;
+}
+#container {
+	margin: 0 auto;
+	width: 800px;
+	background-color: #fff;
+}
+
+/*	Deamon slider specific styles
+------------------------------------------*/
+#gallery {
+	width : 100%;
+}
+#deamonSlider {
+	/* black background */
+	background-color: #000;
+}
+
+#ds-tumbnails {
+	/* specify this on the theme as well*/
+	background-color: #000;
+
+}
+/* Themes */
+.theme-default {
+
+}
+.theme-diabolic-red {
+
+}
+.theme-blue-ocean {
+
+}
+.theme-jade {
+
+}
