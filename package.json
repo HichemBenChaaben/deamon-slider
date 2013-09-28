@@ -1,0 +1,27 @@
+{
+  "name": "deamonslider",
+  "version": "0.0.0",
+  "description": "Faster gallery slider",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/HichemBenChaaben/deamon-slider.git"
+  },
+  "keywords": [
+    "image",
+    "slider"
+  ],
+  "author": "",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/HichemBenChaaben/deamon-slider/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.4",
+    "uglify-js2": "~2.1.11"
+  }
+}
