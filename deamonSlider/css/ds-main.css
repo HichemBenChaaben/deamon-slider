@@ -17,24 +17,39 @@ html, body {
 	/* black background */
 	background-color: #000;
 }
-
+/* The main slider div */
+.ds-slide {
+    background-color: #000;
+    text-align: center;
+    display: block;
+}
+/* Thumbs */
 .ds-isthumb {
 	/* specify this on the theme as well*/
 	background-color: #000;
 	text-align: center;
 	margin: 0 auto;
-	background-color: #000;
+	background-color: #2F2F2F;
 }
-.ds-thumbDimentions {
+/* span default dimensions of the thumbs */
+span.ds-thumbDimentions {
 	display: inline;
 	height : 90px;
 	width : 50px;
+    padding: 31px 0 33px;
 }
+/* default dimensions of the span container of the thumbs */
 .ds-thumbDimentions img {
 	border: 0;
 	vertical-align: middle;
 	max-width: 125px;
 	width: 100%;
+}
+/* highlighted thumb */
+.hightleghted {
+    background-color: #0688E6;
+    border: 0;
+    opacity: 1.3;
 }
 /* Themes */
 .theme-default {
