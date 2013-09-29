@@ -2,15 +2,15 @@ module.exports = function(grunt) {
 
     // PROJECT PATH CONFIGURATION
     var projectConfig = {
-        staticPath:     '../static/',
-        sassPath:       'sass',
-        cssPath:        'css',
-        JsLibPath:      'scripts/lib',
-        JsSourcePath:   'scripts/src',
-        JsMinPath:      'scripts/min',
-        imagesPath:     'images',
-        useLiveReload:  false, // You want or not to enable realtime feedback on the browser ?
-        HttpPortNumber: '8000'
+        staticPath      :'../static/',
+        sassPath        :'sass',
+        cssPath         :'css',
+        JsLibPath       :'scripts/lib',
+        JsSourcePath    :'scripts/src',
+        JsMinPath       :'scripts/min',
+        imagesPath      :'images',
+        useLiveReload   :false, //enable realtime feedback on the browser ?
+        HttpPortNumber  :'8000'
       };
 
     grunt.initConfig({
@@ -71,8 +71,8 @@ module.exports = function(grunt) {
         compass: {
             dist: {
                 options: {
-                    config: '<%= projectConfig.staticPath %>config.rb',
-                    cssDir: '<%= projectConfig.staticPath %><%= projectConfig.cssPath %>',
+                    config:'<%= projectConfig.staticPath %>config.rb',
+                    cssDir  : '<%= projectConfig.staticPath %><%= projectConfig.cssPath %>',
                     sassDir: '<%= projectConfig.staticPath %><%= projectConfig.sassPath %>',
                     imagesDir: '<%= projectConfig.staticPath %><%= projectConfig.imagePath %>',
                 }
