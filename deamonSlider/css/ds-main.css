@@ -18,10 +18,23 @@ html, body {
 	background-color: #000;
 }
 
-#ds-tumbnails {
+.ds-isthumb {
 	/* specify this on the theme as well*/
 	background-color: #000;
-
+	text-align: center;
+	margin: 0 auto;
+	background-color: #000;
+}
+.ds-thumbDimentions {
+	display: inline;
+	height : 90px;
+	width : 50px;
+}
+.ds-thumbDimentions img {
+	border: 0;
+	vertical-align: middle;
+	max-width: 125px;
+	width: 100%;
 }
 /* Themes */
 .theme-default {
