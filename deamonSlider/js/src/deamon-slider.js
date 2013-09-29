@@ -25,7 +25,6 @@
     // Plugin constructor
     function Plugin(element, options) {
         this.element = element;
-
         this.options = $.extend({}, defaults, options);
         this._defaults = defaults;
         this._name = pluginName;
@@ -38,29 +37,51 @@
             // You can access directly the DOM from this function
             // You can access current scope with this.element and this.options
 
-            this.FirstImage(this.options.staticPath, this.options.imageCollection);
+            // Get the first image
+            this.FirstImage(this.options.staticPath,
+                            this.options.imageCollection);
+
+            // Get the thumbs
             this.getAllThumbs(this.options.staticPath,
-            					this.options.imageCollection,
-            					this.options.thumbsClass);
+                                this.options.imageCollection,
+                                this.options.thumbsClass);
         },
         FirstImage: function(path, collection) {
+
             // get the first image
-            $('#ds-main').find('.ds-slide').find('img').attr('src', path + '/' + collection.image2);
+            var newSlide = $("<img/>").attr({
+                    'src': path + '/' + collection.image1
+                });
+
+            // Append the created image to the main element
+            $('#ds-main').find('.ds-slide').append(newSlide);
         },
         getAllThumbs: function(path, collection, thumbsClass, thumbsClassWidth, thumbsClassHeight) {
-        	var partialPath = path + '/';
+        	// Build full path to the image
+            var partialPath = path + '/';
+
+            // loop threw the collection of images and insert them
         	$.each(collection, function( index, value ) {
+
                 // create a new span element and a new span
-                var newSpan = $("<span/>"),
+                var newSpan = $("<span/>").addClass('ds-thumbDimentions'),
                     //Create a new image based on the url fetched from
                     newSource = $("<img/>").attr({
                         'src': partialPath + value
                     });
 
-                // insert the new span after thumbs
+                // insert the new span on the thumbs div
                 $('[class=\"' + thumbsClass + '\"]').append(newSpan);
+
+                // Insert the new brand new span
                 $(newSpan).append(newSource);
             });
+
+            // highlight the first image on the collection
+            $(".ds-thumbDimentions").eq(0)
+                                    .addClass('hightleghted')
+                                    .find('img')
+                                    .fadeTo(0.2);
         }
     };
 
