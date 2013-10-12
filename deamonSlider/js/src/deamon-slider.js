@@ -71,6 +71,7 @@
         updateCount: function(arg) {
             // update the global count object
             self.imageCount = arg;
+            self.activeIndex = 1;
         },
         getAllThumbs: function(path, thumbCollection, thumbsClass) {
             // Build full path to the image
@@ -165,26 +166,31 @@
         animateLeft: function(slideAmount, slideDuration) {
             console.log("The global count of the images is " +  self.imageCount);
             console.log("The active index of the images is " +  self.activeIndex);
-            return this.Animate("-=", -slideAmount, slideDuration);
+            if (self.activeIndex > 0) {
+                return  this.Animate("-=", -slideAmount, slideDuration),
+                        self.activeIndex--;
+            } else {
+                throw ("You can't animate anymore at left");
+            }
         },
         // function which animate a slide 
         // from the left to the right
         animateRight: function(slideAmount, slideDuration) {
             console.log("The global count of the images is " +  self.imageCount);
             console.log("The active index of the images is " +  self.activeIndex);
-
-            return this.Animate("-=", slideAmount, slideDuration);
+            if (self.activeIndex <= self.imageCount) {
+                return this.Animate("-=", slideAmount, slideDuration),
+                        self.activeIndex++;  
+            } else {
+                throw("You cant animate anymore at right");
+            }
         },
         // we will pass the amount to animate
         // then this function will animate for us
         Animate: function(slideDirection, slideAmount, slideDuration) {
-            return $(".ds-slide").animate({
-                    // arg is slideamount
-                    left: slideDirection + slideAmount + "px"
-                }, slideDuration, "easeInOutExpo"),
-                $(".ds-arrow").animate({
-                    // wrong find a proper way to fix it
-                    "height": $(".ds-slide").find("img").height()
+            return $(".ds-slide").animate({ left: slideDirection + slideAmount + "px"
+                    }, slideDuration, "easeInOutExpo"),
+                    $(".ds-arrow").animate({"height": $(".ds-slide").find("img").height()
                     }, self.slideDuration, "easeInOutExpo");
         },
         updateActiveIndex: function(currentIndex, value) {
