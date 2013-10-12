@@ -1,0 +1,151 @@
+/*
+    Compass file for the project deamon slider
+*/
+/* line 5, ../sass/slider.scss */
+html, body {
+  /* grey background */
+  background-color: #ebeced;
+}
+
+/* line 9, ../sass/slider.scss */
+#container {
+  margin: 0 auto;
+  width: 800px;
+  background-color: #fff;
+}
+
+/*  Deamon slider specific styles
+---------------------------------*/
+/* line 17, ../sass/slider.scss */
+#gallery {
+  width: 100%;
+}
+
+/* line 20, ../sass/slider.scss */
+#deamonSlider {
+  /* black background */
+  background-color: #000;
+}
+
+/* The main slider div */
+/* line 25, ../sass/slider.scss */
+.ds-slide {
+  background-color: #000;
+  text-align: center;
+  display: block;
+  position: relative;
+  top: 0;
+}
+
+/* Thumbs */
+/* line 33, ../sass/slider.scss */
+.ds-isthumb {
+  /* specify this on the theme as well*/
+  background-color: #000;
+  text-align: center;
+  margin: 0 auto;
+  background-color: #2F2F2F;
+  height: auto;
+}
+
+/* span default dimensions of the thumbs */
+/* line 44, ../sass/slider.scss */
+.ds-isthumb span {
+  display: inline;
+  height: 90px;
+  width: 50px;
+  cursor: pointer;
+  padding: 26px 0 28px;
+}
+/* line 50, ../sass/slider.scss */
+.ds-isthumb span:hover {
+  background-color: #0688E6;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
+  opacity: 0.7;
+}
+/* line 55, ../sass/slider.scss */
+.ds-isthumb span img:hover {
+  -webkit-transition: opacity 400ms ease-in-out;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
+  opacity: 0.2;
+}
+
+/* line 63, ../sass/slider.scss */
+#ds-main {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: black;
+}
+/* line 69, ../sass/slider.scss */
+#ds-main .ds-slide {
+  display: inline;
+  float: left;
+  width: 100%;
+  position: absolute;
+  -webkit-transform: translateZ(0);
+}
+
+/* default dimensions of the span container of the thumbs */
+/* line 78, ../sass/slider.scss */
+.ds-thumbDimentions img {
+  border: 0;
+  vertical-align: middle;
+  max-width: 125px;
+  width: 100%;
+  position: relative;
+  z-index: 0;
+  height: 72px;
+  -webkit-transform: translateZ(0);
+  -webkit-transition: opacity 400ms ease-in-out;
+}
+
+/* highlighted thumb */
+/* line 90, ../sass/slider.scss */
+.hightleghted {
+  position: relative;
+  z-index: 2;
+  background-color: #0688E6 !important;
+  border: 0;
+  opacity: 1.3;
+}
+
+/* arrows */
+/* line 99, ../sass/slider.scss */
+#ds-left, #ds-right {
+  background-color: black;
+  opacity: 0.2;
+}
+/* line 102, ../sass/slider.scss */
+#ds-left:hover, #ds-right:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+  opacity: 0.8;
+  -webkit-transition: opacity 400ms ease-in-out;
+}
+
+/* line 108, ../sass/slider.scss */
+#ds-right {
+  float: right;
+  background: url("../static/arrowRight.png") no-repeat 70% center;
+}
+
+/* line 112, ../sass/slider.scss */
+#ds-left {
+  background: url("../static/arrowLeft.png") no-repeat 30% center;
+}
+
+/* line 116, ../sass/slider.scss */
+.ds-arrow {
+  cursor: pointer;
+  display: block;
+  height: 400px;
+  position: relative;
+  width: 10%;
+  z-index: 5;
+}
+
+/* line 125, ../sass/slider.scss */
+.ds-overflow {
+  overflow: hidden;
+}
