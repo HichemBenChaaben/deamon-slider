@@ -34,7 +34,7 @@
                 imageCount = 0,
                 slideDuration = this.options.transitionTime,
                 dsSlideClass = this.options.dsSlideClass,
-                hightlightedClassName = hightlightedClassName;
+                hightlightedClassName = this.options.hightlightedClassName;
 
             // create all slides
             this.getAllImages(this.options.staticPath,
@@ -69,9 +69,9 @@
             this.updateCount(imageCount);
         },
         updateCount: function(arg) {
-            // update the global count object
-            self.imageCount = arg;
-            self.activeIndex = 1;
+            // update the global count object and
+            // default assign the active index
+            return self.imageCount = arg, self.activeIndex = 0;
         },
         getAllThumbs: function(path, thumbCollection, thumbsClass) {
             // Build full path to the image
@@ -87,14 +87,14 @@
             });
             // highlight the first thumbnail image on the thumbCollection
             $(".ds-thumbDimentions").eq(0)
-                                     .addClass(self.hightlightedClassName)
+                                     .addClass("hightlighted")
                                      .find("img")
                                      .fadeTo(0.2);
         },
         animateSlide: function() {
             // which index is currently selected ?
             var self = this,
-                slideIndex = $("[class=" + self.hightlightedClassName + "]").index(),
+                slideIndex = $(".highlighted").index(),
             // the width of the slide ?
                 $slideSegment = $(".ds-slide").width(),
                 $thumbElement = $(".ds-thumbDimentions"),
@@ -109,15 +109,15 @@
                 var slideAmount = ( $(this).index() - slideIndex ) * $slideSegment,
                     // in case you want to slide backwards you need to pass a
                     // negative value
-                    slideToIndex = $(this).index() - $("[class=" + self.hightlightedClassName + "]").index();
+                    slideToIndex = $(this).index() - $(".hightlighted").index();
                 slideIndex = $(this).index();
                 // remove the hightlighted class from all the elements
                 // and updated with the clicked thumbnail
                 // this will be used on other behaviours as well
                 $(".ds-thumbDimentions").each(function() {
-                    $(this).removeClass(self.hightlightedClassName);
+                    $(this).removeClass("hightlighted");
                 });
-                $(this).addClass(self.hightlightedClassName);
+                $(this).addClass("hightlighted");
                 // If slideAmount is positive animate right
                 // otherwise animate left
                 return (slideAmount > 0 ?
@@ -125,29 +125,29 @@
                     self.animateLeft(-slideAmount, self.slideDuration));
             });
             // Arrow click handler on the right arrow
-            $("#ds-main").find("img").click(function() {
-                // when click on the main area always display the next
-                // image
+            $("#ds-main").find("span").find("img").click(function() {
+                // display the next image
                 self.animateRight($slideSegment, self.slideDuration);
             });
             $dsLeft.click(function() {
                 // Get the index of the hightlighted element
-                var $highlightedIndex = $("[class=" + self.hightlightedClassName + "]").index();
+                var $highlightedIndex = $(".hightlighted").index();
                 // display the hightlighted index element
                 // if its not the last element then animate it
                 self.animateLeft($slideSegment, self.slideDuration, null);
-                // call the function to update the current active index
-                slideIndex++;
+                // update the value of active index
+                updateSlideIndex(self.activeIndex--);
             });
             // Arrow click handler on the left arrow
             $dsRight.click(function(collectionLength) {
                 // get the index of the hightlighted class
-                var $hightlightedIndex = $("[class=" + self.hightlightedClassName + "]").index();
+                var $hightlightedIndex = $(".hightlighted").index();
                 // display the hightlighted index element
                 // if its not the first element then animate it
                 self.animateRight($slideSegment, self.slideDuration, collectionLength);
-                // call the function to update the current active index
-                slideIndex--;
+                // update the slide index using the current value and the
+                // new value
+                updateSlideIndex(self.activeIndex++);
             });
             // TOUCH AND TAP HANDLERS
 
@@ -161,42 +161,38 @@
                         false);
             });
         },
+        updateHightlightedElement: function() {
+            console.log("Call to update the hightlighted element");
+        },
         // function which animates a slide
         // from the right to the left
         animateLeft: function(slideAmount, slideDuration) {
-            console.log("The global count of the images is " +  self.imageCount);
-            console.log("The active index of the images is " +  self.activeIndex);
-            if (self.activeIndex > 0) {
-                return  this.Animate("-=", -slideAmount, slideDuration),
-                        self.activeIndex--;
-            } else {
-                throw ("You can't animate anymore at left");
-            }
+            // update the slideIndex value
+            this.updateSlideIndex();
+            return  this.Animate("-=", -slideAmount, slideDuration);
         },
-        // function which animate a slide 
-        // from the left to the right
         animateRight: function(slideAmount, slideDuration) {
-            console.log("The global count of the images is " +  self.imageCount);
-            console.log("The active index of the images is " +  self.activeIndex);
-            if (self.activeIndex <= self.imageCount) {
-                return this.Animate("-=", slideAmount, slideDuration),
-                        self.activeIndex++;  
-            } else {
-                throw("You cant animate anymore at right");
-            }
+            this.updateSlideIndex();
+            return this.Animate("-=", slideAmount, slideDuration);  
         },
         // we will pass the amount to animate
         // then this function will animate for us
         Animate: function(slideDirection, slideAmount, slideDuration) {
+            // update the active index value
             return $(".ds-slide").animate({ left: slideDirection + slideAmount + "px"
                     }, slideDuration, "easeInOutExpo"),
                     $(".ds-arrow").animate({"height": $(".ds-slide").find("img").height()
                     }, self.slideDuration, "easeInOutExpo");
         },
-        updateActiveIndex: function(currentIndex, value) {
-            // the value can eather be negative or positive
-            // depends on the animation
-            self.activeIndex = currentIndex + value;
+        // Updating the slide index value
+        updateSlideIndex: function(arg) {
+            // the argument passed here is the straight away value
+            // of the new index, we can set directly the new highlighted element
+            // adding the hightlighted class to the right element
+            //$(".ds-thumbDimentions").eq(arg).addClass("hightlighted");
+            console.log("call to update the slide index the value is" + $(".hightlighted").index());
+            // now the new value of active index is the new hightlighted element
+            self.activeIndex = $(".hightlighted").index();
         }
     };
     // Prevent multiple instanciations 
