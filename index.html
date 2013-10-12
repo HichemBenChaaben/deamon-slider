@@ -1,27 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Deamon Slider</title>
-	<link href="deamonSlider/css/ds-main.css" rel="stylesheet"/>
+    <title>Deamon Slider</title>
+    <link href="deamonSlider/css/slider.css" rel="stylesheet"/>
 </head>
-	<body>
-		<div id="container">
-			<h2>Deamon Slider</h2>
-			<h2>Fast and lightweight slider</h2>
-			<!-- Deamon slider main code -->
-			<div id="slider" class="deamonSlider theme-default">
-				<div id="ds-main">
-					<!-- All the main slides will be loaded here -->
-					<div class="ds-slide"></div>
-				</div>
-				<div id="ds-thumbnails">
-					<!-- All the main slides will be loaded here -->
-					<div class="ds-isthumb"></div>
-				</div>
-			</div>
-		</div>
-		<script type="text/javascript" src="deamonSlider/js/lib/jquery.js"></script>
-		<script type="text/javascript" src="deamonSlider/js/lib/modernizr.js"></script>
-		<script type="text/javascript" src="deamonSlider/js/src/deamon-slider.js"></script>
-	</body>
+    <body>
+        <div id="container">
+            <h2>Deamon Slider</h2>
+            <h2>Fast and lightweight slider</h2>
+            <!-- Deamon slider main code -->
+            <div id="slider" class="deamonSlider">
+                <div id="ds-main">
+                	<!-- direction right controller -->
+                	<span class="ds-arrow" id="ds-right"></span>
+                	<!-- All the main slides will be loaded here as the element below -->
+                	<!-- <div class="ds-slide"></div>-->
+                	<!-- direction left controller -->
+                	<span class="ds-arrow" id="ds-left"></span>
+                </div>
+                <div id="ds-thumbnails">
+                    <!-- All the main slides will be loaded here -->
+                    <div class="ds-isthumb"></div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="deamonSlider/js/lib/jquery.js"></script>
+        <script type="text/javascript" src="deamonSlider/js/lib/modernizr.js"></script>
+        <script type="text/javascript" src="deamonSlider/js/src/deamon-slider.js"></script>
+        <script type="text/javascript" src="deamonSlider/js/lib/jquery.easing.min.js"></script>
+
+        <script type="text/javascript">
+            // This is here for test purposes
+            $(function() {
+                // default parameters migration
+                $(document).deamonSlider({
+                    imagesCollection : {
+                        image1: "Loveman-Photography4-640x426.jpg",
+                        image2: "Loveman-Photography5-640x426.jpg",
+                        image3: "Loveman-Photography6-640x426.jpg",
+                        image4: "Loveman-Photography8-640x426.jpg",
+                        image5: "Loveman-Photography9-640x426.jpg",
+                        image6: "Freeze-Ice-Lollies-Ident-10-640x640.jpg"
+                    },
+                    thumbCollection: {
+                        image1: "Loveman-Photography4-640x426.jpg",
+                        image2: "Loveman-Photography5-640x426.jpg",
+                        image3: "Loveman-Photography6-640x426.jpg",
+                        image4: "Loveman-Photography8-640x426.jpg",
+                        image5: "Loveman-Photography9-640x426.jpg",
+                        image6: "Freeze-Ice-Lollies-Ident-10-640x640.jpg"
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>
