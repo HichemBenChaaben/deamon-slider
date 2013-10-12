@@ -1,5 +1,10 @@
-(function ($, window, document, undefined) {
+// The comma at the beginning is not a mistake
+// it help protect against unclosed functions
+// when you concatenate the file
+;(function ($, window, document, undefined) {
     "use strict";
+    // Plugin definition name and
+    // defaults variables
     var pluginName = "deamonSlider",
         defaults = {
             classSelector: ".bp-image",
@@ -9,7 +14,9 @@
             thumbsClassWidth: 90,
             transitionTime: 400,
             imagesCollection : {},
-            thumbCollection: {}
+            thumbCollection: {},
+            dsSlideClass : "ds-slide",
+            hightlightedClassName : "hightlighted"
         };
     // Plugin constructor
     function Plugin(element, options) {
@@ -22,10 +29,13 @@
     // The main action goes here
     Plugin.prototype = {
         init: function() {
-            var self = this;
-            // Initiation logic goes here 
-            // You can access directly the DOM from this function
-            // You can access current scope with this.element and this.options
+            var self = this,
+                activeIndex = 0,
+                imageCount = 0,
+                slideDuration = this.options.transitionTime,
+                dsSlideClass = this.options.dsSlideClass,
+                hightlightedClassName = hightlightedClassName;
+
             // create all slides
             this.getAllImages(this.options.staticPath,
                                 this.options.imagesCollection);
@@ -39,22 +49,28 @@
         },
         getAllImages: function(path, imagesColection) {
             var partialPath = path + "/",
-                $sliderID = $("#ds-main");
+                $sliderID = $("#ds-main"),
+                imageCount = 0;
             // Loop threw image collection
             $.each(imagesColection, function(index, value) {
                 // create an image element with attr source of it
                 var newSlide = $("<span/>").addClass("ds-slide");
                 newSlide.append($("<img/>").attr({"src": partialPath + value}));
                 $sliderID.append(newSlide);
+                imageCount++;
             });
             // position all images on the canvas and then animate them
             $(".ds-slide").each(function(index) {
-                console.log("the first value is:" + $(this).width() * index);
                 $(this).css({
                     left: $("#ds-main").width() * index,
                     height: "auto"
                 });
             });
+            this.updateCount(imageCount);
+        },
+        updateCount: function(arg) {
+            // update the global count object
+            self.imageCount = arg;
         },
         getAllThumbs: function(path, thumbCollection, thumbsClass) {
             // Build full path to the image
@@ -70,14 +86,14 @@
             });
             // highlight the first thumbnail image on the thumbCollection
             $(".ds-thumbDimentions").eq(0)
-                                     .addClass("hightlighted")
+                                     .addClass(self.hightlightedClassName)
                                      .find("img")
                                      .fadeTo(0.2);
         },
-        animateSlide: function(arg, collectionLength) {
+        animateSlide: function() {
             // which index is currently selected ?
             var self = this,
-                slideIndex = $(".hightlighted").index(),
+                slideIndex = $("[class=" + self.hightlightedClassName + "]").index(),
             // the width of the slide ?
                 $slideSegment = $(".ds-slide").width(),
                 $thumbElement = $(".ds-thumbDimentions"),
@@ -92,50 +108,50 @@
                 var slideAmount = ( $(this).index() - slideIndex ) * $slideSegment,
                     // in case you want to slide backwards you need to pass a
                     // negative value
-                    slideToIndex = $(this).index() - $(".hightlighted").index();
+                    slideToIndex = $(this).index() - $("[class=" + self.hightlightedClassName + "]").index();
                 slideIndex = $(this).index();
                 // remove the hightlighted class from all the elements
                 // and updated with the clicked thumbnail
                 // this will be used on other behaviours as well
                 $(".ds-thumbDimentions").each(function() {
-                    $(this).removeClass("hightlighted");
+                    $(this).removeClass(self.hightlightedClassName);
                 });
-                $(this).addClass("hightlighted");
-                // animate right or left ?
+                $(this).addClass(self.hightlightedClassName);
+                // If slideAmount is positive animate right
+                // otherwise animate left
                 return (slideAmount > 0 ?
-                    self.animateRight(slideAmount, 400):
-                    self.animateLeft(-slideAmount, 400));
+                    self.animateRight(slideAmount, self.slideDuration):
+                    self.animateLeft(-slideAmount, self.slideDuration));
             });
             // Arrow click handler on the right arrow
-            $("#ds-main").find("span").find("img").click(function() {
+            $("#ds-main").find("img").click(function() {
                 // when click on the main area always display the next
                 // image
-                self.animateRight($slideSegment, 400);
+                self.animateRight($slideSegment, self.slideDuration);
             });
-            $dsLeft.click(function(collectionLength) {
-                var $highlightedIndex = $(".hightlighted").index();
+            $dsLeft.click(function() {
+                // Get the index of the hightlighted element
+                var $highlightedIndex = $("[class=" + self.hightlightedClassName + "]").index();
                 // display the hightlighted index element
-                //console.log("The index of the highlighted element is " + $highlightedIndex);
                 // if its not the last element then animate it
-                self.animateLeft($slideSegment, 400, null);
+                self.animateLeft($slideSegment, self.slideDuration, null);
+                // call the function to update the current active index
                 slideIndex++;
             });
             // Arrow click handler on the left arrow
             $dsRight.click(function(collectionLength) {
-                var $hightlightedIndex = $(".hightlighted").index();
+                // get the index of the hightlighted class
+                var $hightlightedIndex = $("[class=" + self.hightlightedClassName + "]").index();
                 // display the hightlighted index element
                 // if its not the first element then animate it
-                self.animateRight($slideSegment, 400, collectionLength);
+                self.animateRight($slideSegment, self.slideDuration, collectionLength);
+                // call the function to update the current active index
                 slideIndex--;
             });
-            // TOUCH HANDLERS
-            /*
-                handle swipe right
-                handle swipe left
-                handle swipe tap
-            */
+            // TOUCH AND TAP HANDLERS
+
             // Arrow keys handlers evaluate right left keypress
-            $("html", document, window).keyup(function(e) {
+            $(document).keyup(function(e) {
                 // this will evaluate the keyPressed 
                 // and then run the appropriate function
                 return ((e.keyCode === 39 || e.keyCode === 37) ?
@@ -146,25 +162,35 @@
         },
         // function which animates a slide
         // from the right to the left
-        animateLeft: function(slideAmount, slideDuration, slideToIndex) {
+        animateLeft: function(slideAmount, slideDuration) {
+            console.log("The global count of the images is " +  self.imageCount);
+            console.log("The active index of the images is " +  self.activeIndex);
             return this.Animate("-=", -slideAmount, slideDuration);
         },
         // function which animate a slide 
         // from the left to the right
-        animateRight: function(slideAmount, slideDuration) { 
+        animateRight: function(slideAmount, slideDuration) {
+            console.log("The global count of the images is " +  self.imageCount);
+            console.log("The active index of the images is " +  self.activeIndex);
+
             return this.Animate("-=", slideAmount, slideDuration);
         },
         // we will pass the amount to animate
         // then this function will animate for us
         Animate: function(slideDirection, slideAmount, slideDuration) {
-            // if an older browser, fall back to jQuery animate
             return $(".ds-slide").animate({
                     // arg is slideamount
                     left: slideDirection + slideAmount + "px"
-                }, slideDuration, "easeInOutExpo"), 
+                }, slideDuration, "easeInOutExpo"),
                 $(".ds-arrow").animate({
-                    "height": $(".ds-slide img").height()
-                    }, 400, "easeInOutExpo");
+                    // wrong find a proper way to fix it
+                    "height": $(".ds-slide").find("img").height()
+                    }, self.slideDuration, "easeInOutExpo");
+        },
+        updateActiveIndex: function(currentIndex, value) {
+            // the value can eather be negative or positive
+            // depends on the animation
+            self.activeIndex = currentIndex + value;
         }
     };
     // Prevent multiple instanciations 
