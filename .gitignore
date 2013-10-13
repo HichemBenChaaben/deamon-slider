@@ -1,5 +1,7 @@
 *.py[co]
 .DS_Store
-
+.manage,py
 # ignore node modules
-grunt/node_modules 
+grunt/node_modules/
+node_modules/
+bower_components

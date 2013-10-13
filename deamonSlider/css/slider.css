@@ -148,12 +148,12 @@ html, body {
 /* line 121, ../sass/slider.scss */
 #ds-right {
   float: right;
-  background: url("../static/arrowRight.png") no-repeat 70% center;
+  background: url("../images/arrowRight.png") no-repeat 70% center;
 }
 
 /* line 125, ../sass/slider.scss */
 #ds-left {
-  background: url("../static/arrowLeft.png") no-repeat 30% center;
+  background: url("../images/arrowLeft.png") no-repeat 30% center;
 }
 
 /* line 129, ../sass/slider.scss */

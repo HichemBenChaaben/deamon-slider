@@ -3,12 +3,9 @@
 // when you concatenate the file
 ;(function ($, window, document, undefined) {
     "use strict";
-    // Plugin definition name and
-    // defaults variables
     var pluginName = "deamonSlider",
         defaults = {
-            classSelector: ".bp-image",
-            staticPath: "deamonSlider/images",
+            staticPath: "deamonSlider/gallery",
             thumbsClass: "ds-isthumb",
             thumbsClassHeight: 50,
             thumbsClassWidth: 90,
@@ -166,7 +163,7 @@
             if (self.activeIndex >= 0) {
                 return  this.Animate("-=", -slideAmount, slideDuration);
             } else {
-                throw("You can't animate that stuff because its the limit");
+                this.endOfAnimation("left");
             }
             
         },
@@ -175,8 +172,25 @@
             if (self.activeIndex >= 0 && self.activeIndex < self.imageCount) {
                 return this.Animate("-=", slideAmount, slideDuration);
             } else {
-                throw("You can't animate that");
+                this.endOfAnimation("right", slideAmount, slideDuration);
             }  
+        },
+        endOfAnimation: function(arg ,slideAmount, slideDuration) {
+            if (arg === "left") {
+                $(".ds-slide").animate({ left: "+=" + 200 + "px"
+                                }, 100, "easeInOutExpo",function() {
+                                    $(this).animate({
+                                        left: "-=" + 200 + "px"
+                                        }, 50, "easeInOutExpo");
+                                    });
+            } else {
+                $(".ds-slide").animate({ left: "-=" + 200 + "px"
+                                }, 100, "easeInOutExpo",function() {
+                                    $(this).animate({
+                                        left: "+=" + 200 + "px"
+                                        }, 50, "easeInOutExpo");
+                                    });
+            }
         },
         // we will pass the amount to animate
         // then this function will animate for us
