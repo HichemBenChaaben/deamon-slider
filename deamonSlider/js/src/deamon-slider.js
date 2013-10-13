@@ -163,15 +163,20 @@
         animateLeft: function(slideAmount, slideDuration, newIndex) {
             // update the slideIndex value
             this.updateSlideIndex(newIndex);
-            return (self.activeIndex >= 0 ?
-                    this.Animate("-=", -slideAmount, slideDuration):
-                    false);
+            if (self.activeIndex >= 0) {
+                return  this.Animate("-=", -slideAmount, slideDuration);
+            } else {
+                throw("You can't animate that stuff because its the limit");
+            }
+            
         },
         animateRight: function(slideAmount, slideDuration, newIndex) {
             this.updateSlideIndex(newIndex);
-            return (self.activeIndex < self.imageCount ?
-                    this.Animate("-=", slideAmount, slideDuration) :
-                    false);
+            if (self.activeIndex < self.imageCount) {
+                return this.Animate("-=", slideAmount, slideDuration);
+            } else {
+                throw("You can't animate that");
+            }  
         },
         // we will pass the amount to animate
         // then this function will animate for us
@@ -188,6 +193,7 @@
             // of the new index, we can set directly the new highlighted element
             // adding the hightlighted class to the right element
             var totalImages = self.imageCount;
+            
             if(newIndex >= 0 && newIndex < totalImages ) {
                 $(".ds-thumbDimentions").each(function() {
                     $(this).removeClass("hightlighted");
