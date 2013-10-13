@@ -94,7 +94,6 @@
         animateSlide: function() {
             // which index is currently selected ?
             var self = this,
-                slideIndex = $(".highlighted").index(),
             // the width of the slide ?
                 $slideSegment = $(".ds-slide").width(),
                 $thumbElement = $(".ds-thumbDimentions"),
@@ -106,59 +105,57 @@
             // click handler on the thumb elements
             $thumbElement.click(function() {
                 // change the index of the hightlighted element
-                var slideAmount = ( $(this).index() - slideIndex ) * $slideSegment,
+                var slideAmount = ( $(this).index() - $(".hightlighted").index()) * $slideSegment,
                     // in case you want to slide backwards you need to pass a
                     // negative value
                     slideToIndex = $(this).index() - $(".hightlighted").index();
-                slideIndex = $(this).index();
-                // remove the hightlighted class from all the elements
-                // and updated with the clicked thumbnail
-                // this will be used on other behaviours as well
-                $(".ds-thumbDimentions").each(function() {
-                    $(this).removeClass("hightlighted");
-                });
-                $(this).addClass("hightlighted");
                 // If slideAmount is positive animate right
                 // otherwise animate left
                 return (slideAmount > 0 ?
-                    self.animateRight(slideAmount, self.slideDuration):
-                    self.animateLeft(-slideAmount, self.slideDuration));
+                    self.animateRight(slideAmount, self.slideDuration, $(this).index()):
+                    self.animateLeft(-slideAmount, self.slideDuration, $(this).index()));
             });
             // Arrow click handler on the right arrow
             $("#ds-main").find("span").find("img").click(function() {
+                // handle the exeption of the last element
+                var newIndex = $(".hightlighted").index() + 1;
                 // display the next image
-                self.animateRight($slideSegment, self.slideDuration);
+                self.animateRight($slideSegment, self.slideDuration, newIndex);
             });
+            // click on arrows handlers
             $dsLeft.click(function() {
-                // Get the index of the hightlighted element
-                var $highlightedIndex = $(".hightlighted").index();
+                // handle the exeption of the last index
+                var newIndex = $(".hightlighted").index() - 1;
                 // display the hightlighted index element
                 // if its not the last element then animate it
-                self.animateLeft($slideSegment, self.slideDuration, null);
-                // update the value of active index
-                updateSlideIndex(self.activeIndex--);
+                self.animateLeft($slideSegment, self.slideDuration, newIndex);
             });
             // Arrow click handler on the left arrow
             $dsRight.click(function(collectionLength) {
                 // get the index of the hightlighted class
-                var $hightlightedIndex = $(".hightlighted").index();
+                var newIndex = $(".hightlighted").index() + 1;
                 // display the hightlighted index element
                 // if its not the first element then animate it
-                self.animateRight($slideSegment, self.slideDuration, collectionLength);
+                self.animateRight($slideSegment, self.slideDuration, newIndex);
                 // update the slide index using the current value and the
-                // new value
-                updateSlideIndex(self.activeIndex++);
             });
             // TOUCH AND TAP HANDLERS
 
             // Arrow keys handlers evaluate right left keypress
             $(document).keyup(function(e) {
+                var key = e.keyCode,
+                    newIndex = $(".hightlighted").index();
                 // this will evaluate the keyPressed 
                 // and then run the appropriate function
-                return ((e.keyCode === 39 || e.keyCode === 37) ?
-                            (e.keyCode === 39 ? self.animateRight($slideSegment) :
-                            self.animateLeft($slideSegment)) :
-                        false);
+                if (key === 39) {
+                    newIndex = newIndex + 1;
+                    return self.animateRight($slideSegment, self.slideDuration, newIndex);
+                } else if (key === 37) {
+                    newIndex = newIndex - 1;
+                    return self.animateLeft($slideSegment, self.slideDuration, newIndex);
+                } else {
+                    return false;
+                }
             });
         },
         updateHightlightedElement: function() {
@@ -166,14 +163,23 @@
         },
         // function which animates a slide
         // from the right to the left
-        animateLeft: function(slideAmount, slideDuration) {
+        animateLeft: function(slideAmount, slideDuration, newIndex) {
             // update the slideIndex value
-            this.updateSlideIndex();
-            return  this.Animate("-=", -slideAmount, slideDuration);
+            this.updateSlideIndex(newIndex);
+            if (self.activeIndex <= 0) {
+                return  this.Animate("-=", -slideAmount, slideDuration);
+            } else {
+                throw("You can't animate that stuff because its the limit");
+            }
+            
         },
-        animateRight: function(slideAmount, slideDuration) {
-            this.updateSlideIndex();
-            return this.Animate("-=", slideAmount, slideDuration);  
+        animateRight: function(slideAmount, slideDuration, newIndex) {
+            this.updateSlideIndex(newIndex);
+            if (self.activeIndex < self.imageCount) {
+                return this.Animate("-=", slideAmount, slideDuration);
+            } else {
+                throw("You can't animate that");
+            }  
         },
         // we will pass the amount to animate
         // then this function will animate for us
@@ -185,12 +191,14 @@
                     }, self.slideDuration, "easeInOutExpo");
         },
         // Updating the slide index value
-        updateSlideIndex: function(arg) {
+        updateSlideIndex: function(newIndex) {
             // the argument passed here is the straight away value
             // of the new index, we can set directly the new highlighted element
             // adding the hightlighted class to the right element
-            //$(".ds-thumbDimentions").eq(arg).addClass("hightlighted");
-            console.log("call to update the slide index the value is" + $(".hightlighted").index());
+            $(".ds-thumbDimentions").each(function() {
+                $(this).removeClass("hightlighted");
+            });
+            $(".ds-thumbDimentions").eq(newIndex).addClass("hightlighted");
             // now the new value of active index is the new hightlighted element
             self.activeIndex = $(".hightlighted").index();
         }
