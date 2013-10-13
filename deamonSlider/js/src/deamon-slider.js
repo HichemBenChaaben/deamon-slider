@@ -148,11 +148,11 @@
                 // this will evaluate the keyPressed 
                 // and then run the appropriate function
                 if (key === 39) {
-                    newIndex = newIndex + 1;
-                    return self.animateRight($slideSegment, self.slideDuration, newIndex);
+                    return newIndex = newIndex + 1,
+                            self.animateRight($slideSegment, self.slideDuration, newIndex);
                 } else if (key === 37) {
-                    newIndex = newIndex - 1;
-                    return self.animateLeft($slideSegment, self.slideDuration, newIndex);
+                    return newIndex = newIndex - 1,
+                            self.animateLeft($slideSegment, self.slideDuration, newIndex);
                 } else {
                     return false;
                 }
@@ -166,7 +166,7 @@
         animateLeft: function(slideAmount, slideDuration, newIndex) {
             // update the slideIndex value
             this.updateSlideIndex(newIndex);
-            if (self.activeIndex <= 0) {
+            if (self.activeIndex >= 0) {
                 return  this.Animate("-=", -slideAmount, slideDuration);
             } else {
                 throw("You can't animate that stuff because its the limit");
@@ -195,12 +195,17 @@
             // the argument passed here is the straight away value
             // of the new index, we can set directly the new highlighted element
             // adding the hightlighted class to the right element
-            $(".ds-thumbDimentions").each(function() {
-                $(this).removeClass("hightlighted");
-            });
-            $(".ds-thumbDimentions").eq(newIndex).addClass("hightlighted");
-            // now the new value of active index is the new hightlighted element
-            self.activeIndex = $(".hightlighted").index();
+            var totalImages = self.imageCount;
+            if(newIndex >= 0 && newIndex < totalImages ) {
+                $(".ds-thumbDimentions").each(function() {
+                    $(this).removeClass("hightlighted");
+                });
+                $(".ds-thumbDimentions").eq(newIndex).addClass("hightlighted");
+                // now the new value of active index is the new hightlighted element
+                self.activeIndex = $(".hightlighted").index();
+            } else {
+                throw ("something is wrong with the new index");
+            }
         }
     };
     // Prevent multiple instanciations 
