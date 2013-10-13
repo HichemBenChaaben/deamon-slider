@@ -158,28 +158,20 @@
                 }
             });
         },
-        updateHightlightedElement: function() {
-            console.log("Call to update the hightlighted element");
-        },
         // function which animates a slide
         // from the right to the left
         animateLeft: function(slideAmount, slideDuration, newIndex) {
             // update the slideIndex value
             this.updateSlideIndex(newIndex);
-            if (self.activeIndex >= 0) {
-                return  this.Animate("-=", -slideAmount, slideDuration);
-            } else {
-                throw("You can't animate that stuff because its the limit");
-            }
-            
+            return (self.activeIndex >= 0 ?
+                    this.Animate("-=", -slideAmount, slideDuration):
+                    false);
         },
         animateRight: function(slideAmount, slideDuration, newIndex) {
             this.updateSlideIndex(newIndex);
-            if (self.activeIndex < self.imageCount) {
-                return this.Animate("-=", slideAmount, slideDuration);
-            } else {
-                throw("You can't animate that");
-            }  
+            return (self.activeIndex < self.imageCount ?
+                    this.Animate("-=", slideAmount, slideDuration) :
+                    false);
         },
         // we will pass the amount to animate
         // then this function will animate for us
@@ -203,8 +195,6 @@
                 $(".ds-thumbDimentions").eq(newIndex).addClass("hightlighted");
                 // now the new value of active index is the new hightlighted element
                 self.activeIndex = $(".hightlighted").index();
-            } else {
-                throw ("something is wrong with the new index");
             }
         }
     };
