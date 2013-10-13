@@ -172,7 +172,7 @@
         },
         animateRight: function(slideAmount, slideDuration, newIndex) {
             this.updateSlideIndex(newIndex);
-            if (self.activeIndex < self.imageCount) {
+            if (self.activeIndex >= 0 && self.activeIndex < self.imageCount) {
                 return this.Animate("-=", slideAmount, slideDuration);
             } else {
                 throw("You can't animate that");
@@ -201,6 +201,8 @@
                 $(".ds-thumbDimentions").eq(newIndex).addClass("hightlighted");
                 // now the new value of active index is the new hightlighted element
                 self.activeIndex = $(".hightlighted").index();
+            } else {
+                self.activeIndex = -1;
             }
         }
     };
