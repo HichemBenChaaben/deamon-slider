@@ -33,21 +33,26 @@
                 dsSlideClass = this.options.dsSlideClass,
                 hightlightedClassName = this.options.hightlightedClassName;
 
-            // create all slides
-            this.getAllImages(this.options.staticPath,
-                                this.options.imagesCollection);
             // Get the thumbs
             this.getAllThumbs(this.options.staticPath,
                                 this.options.thumbCollection,
                                 this.options.thumbsClass);
+
+            // create all slides
+            this.getAllImages(this.options.staticPath,
+                                this.options.imagesCollection);
+
             // start animating the slides
             this.animateSlide(this.options.transitionTime,
                                 this.options.imagesCollection.length);
+            // call to the full screen handler
+            this.fullScreenHandler($("#ds-caption"));
         },
         getAllImages: function(path, imagesColection) {
             var partialPath = path + "/",
                 $sliderID = $("#ds-main"),
                 imageCount = 0;
+            // preload images 
             // Loop threw image collection
             $.each(imagesColection, function(index, value) {
                 // create an image element with attr source of it
@@ -70,13 +75,55 @@
             // default assign the active index
             return self.imageCount = arg, self.activeIndex = 0;
         },
+        preloadAllThumbs:function(path, thumbCollection) {
+            var manifest = [],
+                i = 0;
+
+            $.getScript("deamonSlider/js/lib/preloadjs-0.4.0.min.js", function() {
+               //do magic
+               // fill the manifest with shit
+               for(;i--;) {
+                   manifest.push(path + "/" + thumbCollection[i]);
+                   console.log("The manifest value is" + mainfest[i]);
+               }
+               // Create a preloader. There is no manifest added to it up-front,
+               // we will add items on-demand.
+               //change "" to add base path
+               var preload = new createjs.LoadQueue(true, "");
+               //show progress
+               var $mainProgress = $("#mainProgress"),
+                   $progressBar = $mainProgress.find(".progress");
+               $progressBar.width(0);
+               preload.addEventListener("progress", function() {
+                   console.log('Updating preloading progress...' + Math.round(preload.progress * 100) + "%");
+                   $progressBar.width(preload.progress * $mainProgress.width());
+               });
+               //complete callback
+               preload.addEventListener("complete", function() {
+                   console.log("ASSETS PRELOADED...");
+               });
+               preload.setMaxConnections(5);
+               preload.loadManifest(manifest);
+            });
+        },
         getAllThumbs: function(path, thumbCollection, thumbsClass) {
             // Build full path to the image
             var partialPath = path + "/";
+            // Preload everything
+            /*
+            $.preload = function() {
+                var tmp = [],
+                    i = partialPath + "/" + thumbCollection.length;
+                for(;i--;)tmp.push($('<img />').attr('src',thumbCollection[i]));
+            };
+            */
+            // Call preload method
+            this.preloadAllThumbs(path, thumbCollection);
             // loop threw the collection of images and insert them
             $.each(thumbCollection, function(index, value) {
                 var newSource = $("<img/>").attr({"src": partialPath + "/" + value}),
                     newSpan = $("<span class=\"ds-thumbDimentions\"/>");
+                //$.preload();
                 // insert the new span on the thumbs div
                 $("[class=\"" + thumbsClass + "\"]").append(newSpan);
                 // Insert the new brand new span
@@ -95,7 +142,8 @@
                 $slideSegment = $(".ds-slide").width(),
                 $thumbElement = $(".ds-thumbDimentions"),
                 $dsLeft       = $("#ds-left"),
-                $dsRight      = $("#ds-right");
+                $dsRight      = $("#ds-right"),
+                $hightlightedIndex = $(".hightlighted").index();
             // this function assumed that you have all slides already 
             // downloaded and ready to be served
             // it need to be plugged to an ajax http request
@@ -218,7 +266,14 @@
             } else {
                 self.activeIndex = -1;
             }
-        }
+        },
+        fullScreenHandler : function(arg) {
+            arg.click(function() {
+                if(!$("#slider").fullScreen()) {
+                    throw ("Full screen dependency missing");
+                }
+            });
+        },
     };
     // Prevent multiple instanciations 
     // keeping the plugin fast in execution
@@ -229,4 +284,5 @@
             }
         });
     };
+
 })(jQuery, window, document);

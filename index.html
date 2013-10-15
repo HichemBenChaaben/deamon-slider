@@ -11,6 +11,11 @@
             <!-- Deamon slider main code -->
             <div id="slider" class="deamonSlider">
                 <div id="ds-main">
+                    <div id="ds-caption">
+                        <span id="ds-txt"></span>
+                        <span id="ds-fullScreen"></span>
+                        <span id="ds-action"></span>
+                    </div>
                 	<!-- direction right controller -->
                 	<span class="ds-arrow" id="ds-right"></span>
                 	<!-- All the main slides will be loaded here as the element below -->
@@ -26,12 +31,14 @@
         </div>
         <script type="text/javascript" src="deamonSlider/js/lib/jquery.js"></script>
         <script type="text/javascript" src="deamonSlider/js/lib/modernizr.js"></script>
-        <script type="text/javascript" src="deamonSlider/js/src/deamon-slider.js"></script>
+        <script type="text/javascript" src="deamonSlider/js/lib/preloadjs-0.4.0.min.js"></script>
         <script type="text/javascript" src="deamonSlider/js/lib/jquery.easing.min.js"></script>
+        <script type="text/javascript" src="deamonSlider/js/lib/fullScreen.js"></script>
+        <script type="text/javascript" src="deamonSlider/js/src/deamon-slider.js"></script>
 
         <script type="text/javascript">
             // This is here for test purposes
-            $(function() {
+            $(document).ready(function() {
                 // default parameters migration
                 $(document).deamonSlider({
                     imagesCollection : {
