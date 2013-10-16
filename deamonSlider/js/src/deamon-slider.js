@@ -241,21 +241,24 @@
         // we will pass the amount to animate
         // then this function will animate for us
         Animate: function(slideDirection, slideAmount, slideDuration) {
-            var slideValue = slideDirection + slideAmount;
-            if(!$(".ds-slide").hasClass("ds-animate-slide")) {
-                $(".ds-slide").addClass("ds-animate-slide");
-            }
-            // animate the height of the right and left controllers
-            $(".ds-arrow").css({height: $(".ds-slide img")
-                            .eq($(".hightlighted").index()).height()});
+            var slideValue = slideDirection + slideAmount,
+                $dsSlide = $('.ds-slide');
 
-            // update the active index value
-            $(".ds-slide")
-                .css({ left: slideValue + "px",})
-                .eq(0)
-                .one("webkitTransitionEnd moztransitionend transitionend oTransitionEnd", function() {
-                   // animation ended handler
+            if(!$dsSlide.hasClass("ds-animate-slide")) {
+                $dsSlide.addClass("ds-animate-slide");
+            }
+            window.setTimeout(function() {
+                // animate the height of the right and left controllers
+                $(".ds-arrow").css({height: $(".ds-slide img")
+                                .eq($(".hightlighted").index()).height()});
+                // update the active index value
+                $(".ds-slide")
+                    .css({ left: slideValue + "px"})
+                    .eq(0)
+                    .one("webkitTransitionEnd moztransitionend transitionend oTransitionEnd", function() {
+                       // animation ended
                 });
+            }, 1);
             /*
                 // ! To do polyfill for non css translations
                 window.setTimeout(function() {
@@ -268,20 +271,23 @@
             // the argument passed here is the straight away value
             // of the new index, we can set directly the new highlighted element
             // adding the hightlighted class to the right element
-            var totalImages = self.imageCount;
-            
-            if(newIndex >= 0 && newIndex < totalImages ) {
-                $(".ds-thumbDimentions").each(function() {
-                    $(this).removeClass("hightlighted");
-                });
-                $(".ds-thumbDimentions").eq(newIndex).addClass("hightlighted");
-                // now the new value of active index is the new hightlighted element
-                self.activeIndex = $(".hightlighted").index();
-            } else {
+            var totalImages = self.imageCount,
+                i = 0,
+                hightlightedClassName = "hightlighted";
+
+            if (newIndex < 0 || newIndex > totalImages ) {
                 self.activeIndex = -1;
+                return false;
             }
+            // removing the old hightlighted class and apply it to the new index
+            $(".ds-thumbDimentions")
+                .removeClass(hightlightedClassName)
+                .eq(newIndex).addClass(hightlightedClassName);
+            // get the index of the hightlighted element
+            self.activeIndex = $(".hightlighted").index();
         },
         fullScreenHandler : function(arg) {
+            // function handling fullscreen Api
             arg.click(function() {
                 if(!$("#slider").fullScreen()) {
                     throw ("Full screen dependency missing");
