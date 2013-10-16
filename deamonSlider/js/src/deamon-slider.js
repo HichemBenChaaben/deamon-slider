@@ -86,7 +86,6 @@
 
             $.getScript(preLoadJs, function() {
                //do magic
-               // fill the manifest with shit
                for(;i--;) {
                    manifest.push(path + "/" + thumbCollection[i]);
                    console.log("The manifest value is" + mainfest[i]);
@@ -94,15 +93,15 @@
                // Create a preloader. There is no manifest added to it up-front,
                // we will add items on-demand.
                //change "" to add base path
-               var preload = new createjs.LoadQueue(true, "");
-               //show progress
-               var $mainProgress = $("#mainProgress"),
-                   $progressBar = $mainProgress.find(".progress");
-               $progressBar.width(0);
-               preload.addEventListener("progress", function() {
-                   console.log('Updating preloading progress...' + Math.round(preload.progress * 100) + "%");
-                   $progressBar.width(preload.progress * $mainProgress.width());
-               });
+                var preload = new createjs.LoadQueue(true, ""),
+                    $mainProgress = $("#mainProgress"),
+                    $progressBar = $mainProgress.find(".progress");
+
+                $progressBar.width(0);
+                preload.addEventListener("progress", function() {
+                    console.log('Updating preloading progress...' + Math.round(preload.progress * 100) + "%");
+                    $progressBar.width(preload.progress * $mainProgress.width());
+                });
                //complete callback
                preload.addEventListener("complete", function() {
                    console.log("ASSETS PRELOADED...");
@@ -242,7 +241,8 @@
         // then this function will animate for us
         Animate: function(slideDirection, slideAmount, slideDuration) {
             var slideValue = slideDirection + slideAmount,
-                $dsSlide = $('.ds-slide');
+                $dsSlide = $('.ds-slide'),
+                endTansitionsEvents = "webkitTransitionEnd moztransitionend transitionend oTransitionEnd";
 
             if(!$dsSlide.hasClass("ds-animate-slide")) {
                 $dsSlide.addClass("ds-animate-slide");
@@ -255,7 +255,7 @@
                 $(".ds-slide")
                     .css({ left: slideValue + "px"})
                     .eq(0)
-                    .one("webkitTransitionEnd moztransitionend transitionend oTransitionEnd", function() {
+                    .one(endTansitionsEvents, function() {
                        // animation ended
                 });
             }, 1);
