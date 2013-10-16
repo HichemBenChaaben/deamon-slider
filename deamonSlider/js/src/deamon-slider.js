@@ -13,7 +13,8 @@
             imagesCollection : {},
             thumbCollection: {},
             dsSlideClass : "ds-slide",
-            hightlightedClassName : "hightlighted"
+            hightlightedClassName : "hightlighted",
+            enableKeyBoardNavigation: true
         };
     // Plugin constructor
     function Plugin(element, options) {
@@ -44,7 +45,8 @@
 
             // start animating the slides
             this.animateSlide(this.options.transitionTime,
-                                this.options.imagesCollection.length);
+                                this.options.imagesCollection.length,
+                                this.options.enableKeyBoardNavigation);
             // call to the full screen handler
             this.fullScreenHandler($("#ds-caption"));
         },
@@ -144,7 +146,8 @@
                 $thumbElement = $(".ds-thumbDimentions"),
                 $dsLeft       = $("#ds-left"),
                 $dsRight      = $("#ds-right"),
-                $hightlightedIndex = $(".hightlighted").index();
+                $hightlightedIndex = $(".hightlighted").index(),
+                isKeyBoardEnabled = this.options.enableKeyBoardNavigation;
             // this function assumed that you have all slides already 
             // downloaded and ready to be served
             // it need to be plugged to an ajax http request
@@ -189,6 +192,10 @@
 
             // Arrow keys handlers evaluate right left keypress
             $(document).keyup(function(e) {
+                // if the user want to disable the keyboard events
+                if (!isKeyBoardEnabled) {
+                    return false;
+                }
                 // wait for the end of animations to trigger a new one
                 if ($(".ds-slide").is(":animated")) {
                     return false;
@@ -247,7 +254,7 @@
                 .css({ left: slideValue + "px",})
                 .eq(0)
                 .one("webkitTransitionEnd moztransitionend transitionend oTransitionEnd", function() {
-                    console.log("animation ended");
+                   // animation ended handler
                 });
             /*
                 // ! To do polyfill for non css translations
