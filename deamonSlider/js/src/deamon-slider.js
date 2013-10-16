@@ -237,11 +237,15 @@
             if(!$(".ds-slide").hasClass("ds-animate-slide")) {
                 $(".ds-slide").addClass("ds-animate-slide");
             }
+            // animate the height of the right and left controllers
+            console.log($(".ds-slide img").eq($(".hightlighted").index()).height());
+            $(".ds-arrow")
+                .addClass("ds-animate-height")
+                .css({height: $(".ds-slide img").eq($(".hightlighted").index()).height()});
+
             // update the active index value
-            $(".ds-slide")
-                .css({
+            $(".ds-slide").css({
                     left: slideValue + "px",
-                    height: "100%"
                 });
             // ! To do polyfill for non css translations
             window.setTimeout(function() {
