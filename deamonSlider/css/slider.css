@@ -170,3 +170,24 @@ html, body {
 .ds-overflow {
   overflow: hidden;
 }
+
+/*Animate my shit*/
+/* line 143, ../sass/slider.scss */
+.ds-animate-slide {
+  -webkit-transition: all 500ms cubic-bezier(0.325, 0, 0.38, 1);
+  /* older webkit */
+  -webkit-transition: all 500ms cubic-bezier(0.325, 0, 0.38, 1.015);
+  -moz-transition: all 500ms cubic-bezier(0.325, 0, 0.38, 1.015);
+  -ms-transition: all 500ms cubic-bezier(0.325, 0, 0.38, 1.015);
+  -o-transition: all 500ms cubic-bezier(0.325, 0, 0.38, 1.015);
+  transition: all 500ms cubic-bezier(0.325, 0, 0.38, 1.015);
+  /* custom */
+  -webkit-transition-timing-function: cubic-bezier(0.325, 0, 0.38, 1);
+  /* older webkit */
+  -webkit-transition-timing-function: cubic-bezier(0.325, 0, 0.38, 1.015);
+  -moz-transition-timing-function: cubic-bezier(0.325, 0, 0.38, 1.015);
+  -ms-transition-timing-function: cubic-bezier(0.325, 0, 0.38, 1.015);
+  -o-transition-timing-function: cubic-bezier(0.325, 0, 0.38, 1.015);
+  transition-timing-function: cubic-bezier(0.325, 0, 0.38, 1.015);
+  /* custom */
+}

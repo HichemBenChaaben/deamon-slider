@@ -188,6 +188,10 @@
 
             // Arrow keys handlers evaluate right left keypress
             $(document).keyup(function(e) {
+                // wait for the end of animations to trigger a new one
+                if ($(".ds-slide").is(":animated")) {
+                    return false;
+                }
                 var key = e.keyCode,
                     newIndex = $(".hightlighted").index();
                 // this will evaluate the keyPressed 
@@ -224,30 +228,25 @@
             }  
         },
         endOfAnimation: function(arg ,slideAmount, slideDuration) {
-            if (arg === "left") {
-                $(".ds-slide").animate({ left: "+=" + 200 + "px"
-                                }, 100, "easeInOutExpo",function() {
-                                    $(this).animate({
-                                        left: "-=" + 200 + "px"
-                                        }, 50, "easeInOutExpo");
-                                    });
-            } else {
-                $(".ds-slide").animate({ left: "-=" + 200 + "px"
-                                }, 100, "easeInOutExpo",function() {
-                                    $(this).animate({
-                                        left: "+=" + 200 + "px"
-                                        }, 50, "easeInOutExpo");
-                                    });
-            }
+            console.log("end of animation");
         },
         // we will pass the amount to animate
         // then this function will animate for us
         Animate: function(slideDirection, slideAmount, slideDuration) {
+            var slideValue = slideDirection + slideAmount;
+            if(!$(".ds-slide").hasClass("ds-animate-slide")) {
+                $(".ds-slide").addClass("ds-animate-slide");
+            }
             // update the active index value
-            return $(".ds-slide").animate({ left: slideDirection + slideAmount + "px"
-                    }, slideDuration, "easeInOutExpo"),
-                    $(".ds-arrow").animate({"height": $(".ds-slide").find("img").height()
-                    }, self.slideDuration, "easeInOutExpo");
+            $(".ds-slide")
+                .css({
+                    left: slideValue + "px",
+                    height: "100%"
+                });
+            // ! To do polyfill for non css translations
+            window.setTimeout(function() {
+                //$(".ds-slide").animate({ left: slideValue + "px"}, slideDuration, "easeInOutExpo");
+            }, 10000);
         },
         // Updating the slide index value
         updateSlideIndex: function(newIndex) {
