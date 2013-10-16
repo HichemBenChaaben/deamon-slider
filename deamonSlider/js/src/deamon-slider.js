@@ -65,9 +65,11 @@
             $(".ds-slide").each(function(index) {
                 $(this).css({
                     left: $("#ds-main").width() * index,
-                    height: "auto"
                 });
             });
+            // Add animated class to the arrows
+            $(".ds-arrow").addClass("ds-animate-height");
+            // Update the image count
             this.updateCount(imageCount);
         },
         updateCount: function(arg) {
@@ -77,9 +79,10 @@
         },
         preloadAllThumbs:function(path, thumbCollection) {
             var manifest = [],
-                i = 0;
+                i = 0,
+                preLoadJs = "deamonSlider/js/lib/preloadjs-0.4.0.min.js";
 
-            $.getScript("deamonSlider/js/lib/preloadjs-0.4.0.min.js", function() {
+            $.getScript(preLoadJs, function() {
                //do magic
                // fill the manifest with shit
                for(;i--;) {
@@ -110,13 +113,11 @@
             // Build full path to the image
             var partialPath = path + "/";
             // Preload everything
-            /*
             $.preload = function() {
                 var tmp = [],
                     i = partialPath + "/" + thumbCollection.length;
                 for(;i--;)tmp.push($('<img />').attr('src',thumbCollection[i]));
             };
-            */
             // Call preload method
             this.preloadAllThumbs(path, thumbCollection);
             // loop threw the collection of images and insert them
@@ -238,19 +239,22 @@
                 $(".ds-slide").addClass("ds-animate-slide");
             }
             // animate the height of the right and left controllers
-            console.log($(".ds-slide img").eq($(".hightlighted").index()).height());
-            $(".ds-arrow")
-                .addClass("ds-animate-height")
-                .css({height: $(".ds-slide img").eq($(".hightlighted").index()).height()});
+            $(".ds-arrow").css({height: $(".ds-slide img")
+                            .eq($(".hightlighted").index()).height()});
 
             // update the active index value
-            $(".ds-slide").css({
-                    left: slideValue + "px",
+            $(".ds-slide")
+                .css({ left: slideValue + "px",})
+                .eq(0)
+                .one("webkitTransitionEnd moztransitionend transitionend oTransitionEnd", function() {
+                    console.log("animation ended");
                 });
-            // ! To do polyfill for non css translations
-            window.setTimeout(function() {
-                //$(".ds-slide").animate({ left: slideValue + "px"}, slideDuration, "easeInOutExpo");
-            }, 10000);
+            /*
+                // ! To do polyfill for non css translations
+                window.setTimeout(function() {
+                    $(".ds-slide").animate({ left: slideValue + "px"}, slideDuration, "easeInOutExpo");
+                }, 10000);
+            */
         },
         // Updating the slide index value
         updateSlideIndex: function(newIndex) {
