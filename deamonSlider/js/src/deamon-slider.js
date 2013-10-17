@@ -242,20 +242,22 @@
         // then this function will animate for us
         Animate: function(slideDirection, slideAmount, slideDuration) {
             var slideValue = slideDirection + slideAmount,
-                $dsSlide = $('.ds-slide');
+                $dsSlide = $('.ds-slide'),
+                $dsArrowId = $(".ds-arrow"),
+                $dsSlideClass = $(".ds-slide"),
+                endTransitionsEvents = "webkitTransitionEnd moztransitionend transitionend oTransitionEnd",
+                heightAmount = $(".ds-slide img").eq($(".hightlighted").index()).height();
 
             if(!$dsSlide.hasClass("ds-animate-slide")) {
                 $dsSlide.addClass("ds-animate-slide");
             }
             window.setTimeout(function() {
                 // animate the height of the right and left controllers
-                $(".ds-arrow").css({height: $(".ds-slide img")
-                                .eq($(".hightlighted").index()).height()});
+                $dsArrowId.css({height: heightAmount});
                 // update the active index value
-                $(".ds-slide")
-                    .css({ left: slideValue + "px"})
+                $dsSlideClass.css({ left: slideValue + "px"})
                     .eq(0)
-                    .one("webkitTransitionEnd moztransitionend transitionend oTransitionEnd", function() {
+                    .one(endTransitionsEvents, function() {
                        // animation ended
                 });
             }, 1);
