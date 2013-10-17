@@ -32,7 +32,8 @@
                 imageCount = 0,
                 slideDuration = this.options.transitionTime,
                 dsSlideClass = this.options.dsSlideClass,
-                hightlightedClassName = this.options.hightlightedClassName;
+                hightlightedClassName = this.options.hightlightedClassName,
+                enableKeyBoardNavigation = this.options.enableKeyBoardNavigation;
 
             // Get the thumbs
             this.getAllThumbs(this.options.staticPath,
@@ -146,8 +147,7 @@
                 $thumbElement = $(".ds-thumbDimentions"),
                 $dsLeft       = $("#ds-left"),
                 $dsRight      = $("#ds-right"),
-                $hightlightedIndex = $(".hightlighted").index(),
-                isKeyBoardEnabled = this.options.enableKeyBoardNavigation;
+                $hightlightedIndex = $(".hightlighted").index();
             // this function assumed that you have all slides already 
             // downloaded and ready to be served
             // it need to be plugged to an ajax http request
@@ -193,11 +193,11 @@
             // Arrow keys handlers evaluate right left keypress
             $(document).keyup(function(e) {
                 // if the user want to disable the keyboard events
-                if (!isKeyBoardEnabled) {
+                if (!self.options.enableKeyBoardNavigation) {
                     return false;
                 }
                 // wait for the end of animations to trigger a new one
-                if ($(".ds-slide").is(":animated")) {
+                if ($("[class=\"" + self.options.dsSlideClass + "\"]").is(":animated")) {
                     return false;
                 }
                 var key = e.keyCode,
