@@ -32,8 +32,7 @@
                 imageCount = 0,
                 slideDuration = this.options.transitionTime,
                 dsSlideClass = this.options.dsSlideClass,
-                hightlightedClassName = this.options.hightlightedClassName,
-                enableKeyBoardNavigation = this.options.enableKeyBoardNavigation;
+                hightlightedClassName = this.options.hightlightedClassName;
 
             // Get the thumbs
             this.getAllThumbs(this.options.staticPath,
