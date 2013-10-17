@@ -10,7 +10,7 @@ html, body {
 /* line 9, ../sass/slider.scss */
 #container {
   margin: 0 auto;
-  width: 1100px;
+  width: 850px;
   background-color: #fff;
 }
 
@@ -104,9 +104,36 @@ html, body {
   position: absolute;
   -webkit-transform: translateZ(0);
 }
+/* line 88, ../sass/slider.scss */
+#ds-main #ds-caption {
+  display: block;
+  background-color: black;
+  position: absolute;
+  bottom: 0;
+  z-index: 999;
+  height: 35px;
+  width: 100%;
+  cursor: pointer;
+  padding: 5px 10px;
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
+  opacity: 0.2;
+}
+/* line 100, ../sass/slider.scss */
+#ds-main #ds-caption:hover {
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+  opacity: 0.8;
+}
+/* line 103, ../sass/slider.scss */
+#ds-main #ds-caption #ds-txt {
+  color: white;
+}
 
 /* default dimensions of the span container of the thumbs */
-/* line 90, ../sass/slider.scss */
+/* line 110, ../sass/slider.scss */
+.ds-thumbDimentions span {
+  background: url("../images/ajax-loader.gif") no-repeat center center;
+}
+/* line 113, ../sass/slider.scss */
 .ds-thumbDimentions img {
   border: 0;
   vertical-align: middle;
@@ -120,43 +147,43 @@ html, body {
 }
 
 /* highlighted thumb */
-/* line 102, ../sass/slider.scss */
+/* line 126, ../sass/slider.scss */
 .hightlighted {
   position: relative;
   z-index: 3;
   background-color: #0688E6;
 }
-/* line 106, ../sass/slider.scss */
+/* line 130, ../sass/slider.scss */
 .hightlighted img {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=20);
   opacity: 0.2;
 }
 
 /* arrows */
-/* line 112, ../sass/slider.scss */
+/* line 136, ../sass/slider.scss */
 #ds-left, #ds-right {
   background-color: black;
   opacity: 0.2;
 }
-/* line 115, ../sass/slider.scss */
+/* line 139, ../sass/slider.scss */
 #ds-left:hover, #ds-right:hover {
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   opacity: 0.8;
   -webkit-transition: opacity 400ms ease-in-out;
 }
 
-/* line 121, ../sass/slider.scss */
+/* line 145, ../sass/slider.scss */
 #ds-right {
   float: right;
   background: url("../images/arrowRight.png") no-repeat 70% center;
 }
 
-/* line 125, ../sass/slider.scss */
+/* line 149, ../sass/slider.scss */
 #ds-left {
   background: url("../images/arrowLeft.png") no-repeat 30% center;
 }
 
-/* line 129, ../sass/slider.scss */
+/* line 153, ../sass/slider.scss */
 .ds-arrow {
   cursor: pointer;
   display: block;
@@ -166,14 +193,14 @@ html, body {
   z-index: 5;
 }
 
-/* line 138, ../sass/slider.scss */
+/* line 162, ../sass/slider.scss */
 .ds-overflow {
   overflow: hidden;
 }
 
 /*Animate my shit*/
-/* line 143, ../sass/slider.scss */
-.ds-animate-slide {
+/* line 167, ../sass/slider.scss */
+.ds-animate-slide, #ds-main #ds-caption {
   -webkit-transform: translateZ(0);
   -moz-transform: translateZ(0);
   -ms-transform: translateZ(0);
@@ -191,7 +218,7 @@ html, body {
   transition-timing-function: cubic-bezier(0.325, 0, 0.38, 1);
 }
 
-/* line 161, ../sass/slider.scss */
+/* line 185, ../sass/slider.scss */
 .ds-animate-height {
   -webkit-transform: translateZ(0);
   -moz-transform: translateZ(0);

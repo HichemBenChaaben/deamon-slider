@@ -5,16 +5,19 @@
     "use strict";
     var pluginName = "deamonSlider",
         defaults = {
+            activeIndex: 0,
+            dsSlideClass : "ds-slide",
+            enableKeyBoardNavigation: true,
+            hightlightedClassName : "hightlighted",
+            imagesCollection : {},
             staticPath: "deamonSlider/gallery",
+            thumbCollection: {},
+            thumbContainerClass: "ds-thumbDimentions",
             thumbsClass: "ds-isthumb",
             thumbsClassHeight: 50,
             thumbsClassWidth: 90,
             transitionTime: 400,
-            imagesCollection : {},
-            thumbCollection: {},
-            dsSlideClass : "ds-slide",
-            hightlightedClassName : "hightlighted",
-            enableKeyBoardNavigation: true
+            useThumbnails: true,
         };
     // Plugin constructor
     function Plugin(element, options) {
@@ -49,6 +52,24 @@
                                 this.options.enableKeyBoardNavigation);
             // call to the full screen handler
             this.fullScreenHandler($("#ds-caption"));
+            this.getJsonFile();
+        },
+        getJsonFile: function() {
+            var self = this;
+            // Get the json file and parse it
+            $.ajax({
+                    type: "Get",
+                    cache: false,
+                    url: "../gallery.json"
+                })
+                .done(function(data) {
+                    // json loaded successfully
+                    // self.getAllThumbs(data);
+                })
+                .fail(function(){
+                    // console.log("failed");
+                    // json failed
+                });
         },
         getAllImages: function(path, imagesColection) {
             var partialPath = path + "/",
@@ -94,21 +115,19 @@
                // Create a preloader. There is no manifest added to it up-front,
                // we will add items on-demand.
                //change "" to add base path
-               var preload = new createjs.LoadQueue(true, "");
-               //show progress
-               var $mainProgress = $("#mainProgress"),
-                   $progressBar = $mainProgress.find(".progress");
-               $progressBar.width(0);
-               preload.addEventListener("progress", function() {
-                   console.log('Updating preloading progress...' + Math.round(preload.progress * 100) + "%");
-                   $progressBar.width(preload.progress * $mainProgress.width());
-               });
-               //complete callback
-               preload.addEventListener("complete", function() {
-                   console.log("ASSETS PRELOADED...");
-               });
-               preload.setMaxConnections(5);
-               preload.loadManifest(manifest);
+                var preload = new createjs.LoadQueue(true, ""),
+                    $mainProgress = $("#mainProgress"),
+                    $progressBar = $mainProgress.find(".progress");
+                    $progressBar.width(0);
+                preload.addEventListener("progress", function() {
+                    $progressBar.width(preload.progress * $mainProgress.width());
+                });
+                //complete callback
+                preload.addEventListener("complete", function() {
+                //console.log("ASSETS PRELOADED...");
+                });
+                preload.setMaxConnections(5);
+                preload.loadManifest(manifest);
             });
         },
         getAllThumbs: function(path, thumbCollection, thumbsClass) {
@@ -138,12 +157,12 @@
         animateSlide: function() {
             // which index is currently selected ?
             var self = this,
-            // the width of the slide ?
-            $slideSegment = $(".ds-slide").width(),
-            $thumbElement = $(".ds-thumbDimentions"),
-            $dsLeft= $("#ds-left"),
-            $dsRight = $("#ds-right"),
-            $hightlightedIndex = $(".hightlighted").index();
+                // the width of the slide ?
+                $slideSegment = $(".ds-slide").width(),
+                $thumbElement = $(".ds-thumbDimentions"),
+                $dsLeft= $("#ds-left"),
+                $dsRight = $("#ds-right"),
+                $hightlightedIndex = $(".hightlighted").index();
             // this function assumed that you have all slides already 
             // downloaded and ready to be served
             // it need to be plugged to an ajax http request
@@ -184,32 +203,31 @@
                 self.animateRight($slideSegment, self.slideDuration, newIndex);
                 // update the slide index using the current value and the
             });
-            // TOUCH AND TAP HANDLERS
-
             // Arrow keys handlers evaluate right left keypress
-            $(document).keyup(function(e) {
-                // if the user want to disable the keyboard events
-                if (!self.options.enableKeyBoardNavigation) {
-                    return false;
-                }
-                // wait for the end of animations to trigger a new one
-                if ($("[class=\"" + self.options.dsSlideClass + "\"]").is(":animated")) {
-                    return false;
-                }
-                var key = e.keyCode,
-                    newIndex = $(".hightlighted").index();
-                // this will evaluate the keyPressed 
-                // and then run the appropriate function
-                if (key === 39) {
-                    return newIndex = newIndex + 1,
-                            self.animateRight($slideSegment, self.slideDuration, newIndex);
-                } else if (key === 37) {
-                    return newIndex = newIndex - 1,
-                            self.animateLeft($slideSegment, self.slideDuration, newIndex);
-                } else {
-                    return false;
-                }
-            });
+            if (this.options.enableKeyBoardNavigation) {
+                // more elegant return
+                return (function() {
+                    $(document).keyup(function(e) {
+                        var key = e.keyCode,
+                            newIndex = $(".hightlighted").index();
+                        // wait for the end of animations to trigger a new one
+                        if ($("[class=\"" + self.options.dsSlideClass + "\"]").is(":animated")) {
+                            return false;
+                        }
+                        // this will evaluate the keyPressed 
+                        // and then run the appropriate function
+                        if (key === 39) {
+                            return newIndex = newIndex + 1,
+                                    self.animateRight($slideSegment, self.slideDuration, newIndex);
+                        } else if (key === 37) {
+                            return newIndex = newIndex - 1,
+                                    self.animateLeft($slideSegment, self.slideDuration, newIndex);
+                        } else {
+                            return false;
+                        }
+                    });
+                })();
+            }
         },
         // function which animates a slide
         // from the right to the left
