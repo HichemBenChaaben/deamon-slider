@@ -134,20 +134,17 @@
                 $(newSpan).append(newSource);
             });
             // highlight the first thumbnail image on the thumbCollection
-            $(".ds-thumbDimentions").eq(0)
-                                     .addClass("hightlighted")
-                                     .find("img")
-                                     .fadeTo(0.2);
+            $(".ds-thumbDimentions").eq(0).addClass("hightlighted");
         },
         animateSlide: function() {
             // which index is currently selected ?
             var self = this,
             // the width of the slide ?
-                $slideSegment = $(".ds-slide").width(),
-                $thumbElement = $(".ds-thumbDimentions"),
-                $dsLeft       = $("#ds-left"),
-                $dsRight      = $("#ds-right"),
-                $hightlightedIndex = $(".hightlighted").index();
+            $slideSegment = $(".ds-slide").width(),
+            $thumbElement = $(".ds-thumbDimentions"),
+            $dsLeft= $("#ds-left"),
+            $dsRight = $("#ds-right"),
+            $hightlightedIndex = $(".hightlighted").index();
             // this function assumed that you have all slides already 
             // downloaded and ready to be served
             // it need to be plugged to an ajax http request
